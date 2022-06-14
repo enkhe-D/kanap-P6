@@ -105,7 +105,7 @@ function sendFormulaire() {
     //creation reg exp for validation FirstName field
     function validFirstName() {
       const firstName = contact.firstName;
-      let firstNameRegExp = /^[a-zA-Z\s-]{2,25}$/gi; // a modifer
+      let firstNameRegExp = /^[a-zA-ZÉÈÊËÎÏÀÄÂÇçéêëèîïàâä\s-]{2,25}$/gi; // a modifer
 
       if (firstNameRegExp.test(firstName)) {
         return true;
@@ -119,7 +119,7 @@ function sendFormulaire() {
     //creation reg exp for validation LastName field
     function validLastName() {
       const lastName = contact.lastName;
-      let lastNameRegExp = /^[a-zA-Zé-É\s-]{2,25}$/gi; // a modifier
+      let lastNameRegExp = /^[a-zA-ZÉÈÊËÎÏÀÄÂÇçéêëèîïàâä\s-]{2,25}$/gi; // a modifier
 
       if (lastNameRegExp.test(lastName)) {
         return true;
@@ -132,7 +132,7 @@ function sendFormulaire() {
     //creation reg exp for validation Address field
     function validAddress() {
       const address = contact.address;
-      let addressRegExp = /^[a-zA-Z\d\s,-]+$/gi; // a modifer
+      let addressRegExp = /^[a-zA-ZÉÈÊËÎÏÀÄÂÇçéêëèîïàâä\d\s,-]+$/gi; // a modifer
 
       if (addressRegExp.test(address)) {
         return true;
@@ -145,7 +145,7 @@ function sendFormulaire() {
     //creation reg exp for validation City field
     function validCity() {
       const city = contact.city;
-      let cityRegExp = /^[a-zA-Z\d\s-]+$/gi; // a modifier
+      let cityRegExp = /^[a-zA-ZÉÈÊËÎÏÀÄÂÇçéêëèîïàâä\d\s-]+$/gi; // a modifier
 
       if (cityRegExp.test(city)) {
         return true;
