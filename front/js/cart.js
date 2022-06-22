@@ -1,5 +1,6 @@
 // display selected product
 let basket = JSON.parse(localStorage.getItem("basket")) || [];
+console.log(basket);
 
 basket.forEach((product) => {
   document.querySelector("#cart__items").insertAdjacentHTML(
@@ -12,7 +13,7 @@ basket.forEach((product) => {
         <div class="cart__item__content__description">
           <h2>${product.title}</h2>
           <p>${product.color}</p>
-          <p>${product.price} €</p>
+         <p>${product.price}</p>
         </div>
         <div class="cart__item__content__settings">
           <div class="cart__item__content__settings__quantity">
@@ -26,7 +27,25 @@ basket.forEach((product) => {
       </div>
     </article>`
   );
+  console.log(product);
 });
+
+// function getPrice() {
+//   const url = new URL(window.location.href);
+//   console.log(url);
+//   const idProduct = url.searchParams.get("id");
+//   console.log(idProduct);
+
+//   fetch(`http://localhost:3000/api/products/${idProduct}`)
+//     .then((res) => res.json())
+//     .then(
+//       (data) =>
+//         (document.querySelector(
+//           ".cart__item__content__description > p"
+//         ).innerHTML = data.price)
+//     );
+// }
+// getPrice();
 
 //function for changing quantity
 function changeQuantity() {
@@ -184,6 +203,12 @@ function sendFormulaire() {
     }
 
     if (validForm() === true) {
+      if (basket.length === 0) {
+        alert("Votre panier est vide");
+        location.href = "index.html";
+        return;
+      }
+
       const products = [];
       for (let i = 0; i < products.length; i++) {
         products.push(products[i].idProduct);
@@ -203,8 +228,7 @@ function sendFormulaire() {
       })
         .then((res) => res.json())
         .then((data) => {
-          localStorage.setItem("orderId", data.orderId);
-          location.href = "confirmation.html";
+          location.href = "confirmation.html?orderId=" + data.orderId;
         })
         .catch((error) => console.log(error));
     } else {

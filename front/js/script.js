@@ -19,12 +19,12 @@ async function getArticles() {
       document.querySelector(
         "#items"
       ).innerHTML += `<a href="./product.html?id=${id}">
-                                                        <article>
-                                                        <img src="${img}" alt="${alt}"/>
-                                                        <h3 class="productName">${name}</h3>
-                                                        <p class="productDescription">${description}</p>
-                                                        </article>
-                                                        </a>`;
+                       <article>
+                        <img src="${img}" alt="${alt}"/>
+                        <h3 class="productName">${name}</h3>
+                        <p class="productDescription">${description}</p>
+                        </article>
+                      </a>`;
     }
   }
 }
