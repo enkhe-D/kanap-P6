@@ -30,23 +30,6 @@ basket.forEach((product) => {
   console.log(product);
 });
 
-// function getPrice() {
-//   const url = new URL(window.location.href);
-//   console.log(url);
-//   const idProduct = url.searchParams.get("id");
-//   console.log(idProduct);
-
-//   fetch(`http://localhost:3000/api/products/${idProduct}`)
-//     .then((res) => res.json())
-//     .then(
-//       (data) =>
-//         (document.querySelector(
-//           ".cart__item__content__description > p"
-//         ).innerHTML = data.price)
-//     );
-// }
-// getPrice();
-
 //function for changing quantity
 function changeQuantity() {
   let itemQuantity = document.querySelectorAll(".itemQuantity");
