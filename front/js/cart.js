@@ -1,11 +1,19 @@
 // display selected product
 let basket = JSON.parse(localStorage.getItem("basket")) || [];
-console.log(basket);
 
-basket.forEach((product) => {
-  document.querySelector("#cart__items").insertAdjacentHTML(
-    "beforeend",
-    `<article class="cart__item" data-id="${product.id}" data-color="${product.color}">
+var prices = [];
+
+product();
+
+async function product() {
+  await getPrice();
+
+  basket.forEach((product) => {
+    document.querySelector("#cart__items").insertAdjacentHTML(
+      "beforeend",
+      `<article class="cart__item" data-id="${product.id}" data-color="${
+        product.color
+      }">
       <div class="cart__item__img">
         <img src="${product.image}" alt="${product.imageAlt}">
       </div>
@@ -13,12 +21,14 @@ basket.forEach((product) => {
         <div class="cart__item__content__description">
           <h2>${product.title}</h2>
           <p>${product.color}</p>
-         <p>${product.price}</p>
+         <p id="price_${product.id}">${prices[product.id]} €</p>
         </div>
         <div class="cart__item__content__settings">
           <div class="cart__item__content__settings__quantity">
             <p>Qté : </p>
-            <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="${product.quantity}">
+            <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="${
+              product.quantity
+            }">
           </div>
           <div class="cart__item__content__settings__delete">
             <p class="deleteItem">Supprimer</p>
@@ -26,9 +36,22 @@ basket.forEach((product) => {
         </div>
       </div>
     </article>`
-  );
-  console.log(product);
-});
+    );
+  });
+  changeQuantity();
+  totalProduct();
+  removeBasket();
+}
+
+async function getPrice() {
+  await fetch(`http://localhost:3000/api/products`)
+    .then((res) => res.json())
+    .then((data) => {
+      data.forEach((p) => {
+        prices["" + p._id] = p.price;
+      });
+    });
+}
 
 //function for changing quantity
 function changeQuantity() {
@@ -49,20 +72,19 @@ function changeQuantity() {
     });
   }
 }
-changeQuantity();
 
 //function for getting total price
 function totalProduct() {
   let totalQuantity = 0;
   let totalPrice = 0;
+
   for (product in basket) {
     totalQuantity += parseInt(basket[product].quantity);
-    totalPrice += basket[product].price * basket[product].quantity;
+    totalPrice += prices["" + basket[product].id] * basket[product].quantity;
   }
   document.querySelector("#totalQuantity").innerHTML = totalQuantity;
   document.querySelector("#totalPrice").innerHTML = totalPrice;
 }
-totalProduct();
 
 //function for remove product
 function removeBasket() {
@@ -78,7 +100,6 @@ function removeBasket() {
     });
   }
 }
-removeBasket();
 
 // display msg if product cart is empty
 function displayProduct() {

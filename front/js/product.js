@@ -42,16 +42,6 @@ function getBasket() {
 function saveBasket(basket) {
   localStorage.setItem("basket", JSON.stringify(basket));
 }
-function getPrice() {
-  fetch(`http://localhost:3000/api/products/${idProduct}`)
-    .then((res) => res.json())
-    .then(
-      (data) =>
-        (document.querySelector(
-          ".cart__item__content__description p"
-        ).innerHTML = parseInt(data.price))
-    );
-}
 
 //add product to the basket
 function addBasket(product) {
@@ -62,19 +52,21 @@ function addBasket(product) {
     e.preventDefault();
     if (quantityChoice.value <= 0 || quantityChoice.value > 100) {
       alert("Choisissez une quantité comprise entre 1 et 100");
-    } else if (quantityChoice.value < 0 && colorChoice.value == "") {
+    } else if (quantityChoice.value > 0 && colorChoice.value == "") {
       alert("Choisissez une couleur");
     } else {
       product = {
         id: idProduct,
         title: document.querySelector("#title").innerHTML,
         description: document.querySelector("#description").innerHTML,
-        price: getPrice(),
         color: document.querySelector("#colors").value,
         quantity: document.querySelector("#quantity").value,
         image: document.querySelector(".item__img img").src,
         imageAlt: document.querySelector(".item__img img").alt,
       };
+
+      console.log(product);
+
       let basket = getBasket();
 
       let foundProduct = basket.find(
