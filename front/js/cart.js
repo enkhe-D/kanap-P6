@@ -1,9 +1,17 @@
 // display selected product
 let basket = JSON.parse(localStorage.getItem("basket")) || [];
+console.log(basket);
+
+// const objectLocal = document.querySelector("#cart__items");
+// console.log(objectLocal);
+
+// //si panier vide
+
+// if (basket === null) {
+//   console.log("je suis vide");
+// }
 
 var prices = [];
-
-product();
 
 async function product() {
   await getPrice();
@@ -42,6 +50,7 @@ async function product() {
   totalProduct();
   removeBasket();
 }
+product();
 
 async function getPrice() {
   await fetch(`http://localhost:3000/api/products`)
@@ -128,9 +137,9 @@ function sendFormulaire() {
     //creation reg exp for validation FirstName field
     function validFirstName() {
       const firstName = contact.firstName;
-      let firstNameRegExp = /^[a-zA-ZÉÈÊËÎÏÀÄÂÇçéêëèîïàâä\s-]{2,25}$/gi; // a modifer
-
+      let firstNameRegExp = /^[a-zA-ZÉÈÊËÎÏÀÄÂÇçéêëèîïàâä\s-]{2,25}$/gi;
       if (firstNameRegExp.test(firstName)) {
+        document.querySelector("#firstNameErrorMsg").innerHTML = "Valid";
         return true;
       } else {
         document.querySelector("#firstNameErrorMsg").innerHTML =
@@ -142,9 +151,9 @@ function sendFormulaire() {
     //creation reg exp for validation LastName field
     function validLastName() {
       const lastName = contact.lastName;
-      let lastNameRegExp = /^[a-zA-ZÉÈÊËÎÏÀÄÂÇçéêëèîïàâä\s-]{2,25}$/gi; // a modifier
-
+      let lastNameRegExp = /^[a-zA-ZÉÈÊËÎÏÀÄÂÇçéêëèîïàâä\s-]{2,25}$/gi;
       if (lastNameRegExp.test(lastName)) {
+        document.querySelector("#lastNameErrorMsg").innerHTML = "Valid";
         return true;
       } else {
         document.querySelector("#lastNameErrorMsg").innerHTML =
@@ -155,25 +164,25 @@ function sendFormulaire() {
     //creation reg exp for validation Address field
     function validAddress() {
       const address = contact.address;
-      let addressRegExp = /^[a-zA-ZÉÈÊËÎÏÀÄÂÇçéêëèîïàâä\d\s,-]+$/gi; // a modifer
-
+      let addressRegExp = /^[a-zA-ZÉÈÊËÎÏÀÄÂÇçéêëèîïàâä\d\s,-]+$/gi;
       if (addressRegExp.test(address)) {
+        document.querySelector("#addressErrorMsg").innerHTML = "Valide";
         return true;
       } else {
         document.querySelector("#addressErrorMsg").innerHTML =
-          "Votre adresse n est pas valide";
+          "L adresse n'est pas valide";
       }
     }
 
     //creation reg exp for validation City field
     function validCity() {
       const city = contact.city;
-      let cityRegExp = /^[a-zA-ZÉÈÊËÎÏÀÄÂÇçéêëèîïàâä\d\s-]+$/gi; // a modifier
-
+      let cityRegExp = /^[a-zA-ZÉÈÊËÎÏÀÄÂÇçéêëèîïàâä\d\s-]+$/gi;
       if (cityRegExp.test(city)) {
+        document.querySelector("#cityErrorMsg").innerHTML = "Valide";
         return true;
       } else {
-        document.querySelector("#cityErrorMsg").innerHTML = "pas valid";
+        document.querySelector("#cityErrorMsg").innerHTML = "";
       }
     }
 
@@ -183,10 +192,11 @@ function sendFormulaire() {
       let emailRegExp = /^[a-zA-Z-\d._]+[@]{1}[a-zA-Z]+[.]{1}[a-z]{1,26}$/gi;
 
       if (emailRegExp.test(email)) {
+        document.querySelector("#emailErrorMsg").innerHTML = "Valide";
         return true;
       } else {
         document.querySelector("#emailErrorMsg").innerHTML =
-          "Adresse Non Valid";
+          "email mal renseigné et doit contenir un @, pas d accent";
       }
     }
 
@@ -213,28 +223,32 @@ function sendFormulaire() {
         return;
       }
 
-      const products = [];
+      const products = basket[product];
+      console.log(products);
       for (let i = 0; i < products.length; i++) {
         products.push(products[i].idProduct);
       }
 
       const dataOrder = {
-        products,
         contact,
+        products,
       };
+      console.log(dataOrder);
 
-      fetch("http://localhost:3000/api/products/order", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(dataOrder),
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          location.href = "confirmation.html?orderId=" + data.orderId;
+      async function post() {
+        fetch("http://localhost:3000/api/products/order", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(dataOrder),
         })
-        .catch((error) => console.log(error));
+          .then((res) => res.json())
+          .then((data) => {
+            location.href = "confirmation.html?orderId=" + data.orderId;
+          })
+          .catch((error) => console.log(error));
+      }
     } else {
       event.preventDefault();
     }
